@@ -1,22 +1,32 @@
 // main.cpp
-#include <QCoreApplication>
-#include <QTextStream>
-#include <cstdio>
+#include <QApplication>
+#include <QHeaderView>
+#include <QStandardItemModel>
+#include <QTreeView>
 
-QTextStream out(stdout);
+int main(int argc, char **argv)
+{
+	QApplication app(argc, argv);
 
-class MyObject : public QObject {
-  Q_OBJECT
-public:
-  MyObject() {}
-  Q_SLOT void mySlot() { out << "Hello from " << __FUNCTION__ << endl; }
-};
+	QStandardItemModel model;
 
-int main(int argc, char ** argv) {
-  QCoreApplication app(argc, argv);
-  MyObject obj;
 
-  return app.exec();
+	for (int i = 0; i < 10; ++i) {
+		const QString rowText = QLatin1String("Row ") + QString::number(i);
+		QStandardItem *child = new QStandardItem(rowText);
+		for (int j = 0; j < 1; ++j) {
+			child->appendRow(new QStandardItem(rowText + QLatin1Char('/') + QString::number(j)));
+		}
+		model.appendRow(child);
+	}
+
+	QTreeView treeView;
+	treeView.setModel(&model);
+
+  
+
+	treeView.show();
+	return app.exec();
 }
 
 #include "main.moc"
