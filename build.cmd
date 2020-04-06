@@ -1,0 +1,1 @@
+"c:\Program Files\CMake\bin\cmake.exe"  -G "Visual Studio 15 2017" -D CMAKE_PREFIX_PATH="c:\Qt\Qt-5.14.2\lib\cmake\Qt5" ..
