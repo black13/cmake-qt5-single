@@ -3,6 +3,40 @@
 #include <QHeaderView>
 #include <QStandardItemModel>
 #include <QTreeView>
+//https://www.qtcentre.org/threads/49656-ContextMenu-in-QTreeView
+//https://www.qtcentre.org/threads/19919-Custom-context-menu-in-QTreeView
+
+class QPropertyEditorWidget : public QTreeView
+{
+	Q_OBJECT
+public:
+
+	
+	QPropertyEditorWidget(QWidget* parent = 0);
+
+	/// Destructor
+	virtual ~QPropertyEditorWidget();
+
+	
+public slots:
+
+	void displayPairingMenu(const QPoint &pos)
+	{
+
+	}
+
+	
+};
+
+QPropertyEditorWidget::QPropertyEditorWidget(QWidget* parent /*= 0*/) : QTreeView(parent)
+{
+	connect(this, SIGNAL(customContextMenuRequested(QPoint)),this, SLOT(displayPairingMenu(QPoint)));
+}
+
+
+QPropertyEditorWidget::~QPropertyEditorWidget()
+{
+}
 
 int main(int argc, char **argv)
 {
@@ -20,11 +54,19 @@ int main(int argc, char **argv)
 		model.appendRow(child);
 	}
 
-	QTreeView treeView;
+	QPropertyEditorWidget treeView;
+	//connect(treeView, &QWidget::customContextMenuRequested,this, &MainWindow::onCustomContextMenuRequested);
+	//QObject::connect(treeView, SIGNAL(customContextMenuRequested(QPoint)), treeView, SLOT(displayPairingMenu(QPoint)));
+	treeView.setContextMenuPolicy(Qt::ActionsContextMenu);
 	treeView.setModel(&model);
+	
 
-  
-
+	/*
+		QAction *foo = new QAction("Foo", 0);
+	foo->setShortcut(QKeySequence("Ctrl+F"));
+	QMenu *menu = new QMenu();
+	menu->addAction(foo);
+	*/
 	treeView.show();
 	return app.exec();
 }
